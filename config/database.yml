@@ -1,0 +1,17 @@
+default: &default
+ adapter: postgresql
+ encoding: utf8
+ reconnect: false
+ pool: 5
+ username: root
+ password: root
+ timeout: 5000
+ host: localhost
+
+development:
+ <<: *default
+ database: github_api_development
+
+production:
+  <<: *default
+  database: github_api_production
