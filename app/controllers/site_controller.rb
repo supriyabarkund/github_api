@@ -27,6 +27,6 @@ class SiteController < ApplicationController
   private
 
   def get_api
-    @client = Octokit::Client.new(login: 'barkundsupriya-webonise', password: 'webonise')
+    @client = Octokit::Client.new(login: 'barkundsupriya-webonise', password: 'webonise123#')
   end
 end
