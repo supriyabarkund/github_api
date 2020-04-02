@@ -1,18 +1,16 @@
 class SiteController < ApplicationController
-  require 'rest-client'
+
+  before_filter :get_api
+  require 'octokit'
 
   def index; end
 
   def list_of_repo
-    url = "orgs/webonise/repos?type=#{params[:type]}"
-    response = get_api(url)
-    @repo_list = JSON.parse(response.to_str)
+    @repo_list
   end
 
   def list_of_commits
-    url = "repos/webonise/usa-basketball/commits?author=#{params[:author]}"
-    response = get_api(url)
-    @commits_list = JSON.parse(response.to_str)
+    @commit_list
   end
 
   def list_of_branches
@@ -22,20 +20,15 @@ class SiteController < ApplicationController
   end
 
   def list_of_pulls
-    url = "repos/webonise/usa-basketball/pulls?state=#{params[:state]}"
-    response = get_api(url)
-    @pull_list = JSON.parse(response.to_str)
+    @pull_list
   end
 
   private
 
-  def get_api(url)
-    response = RestClient::Request.new(
-        :method => :get,
-        :url => 'https://api.github.com/' + url,
-        :user => 'barkundsupriya-webonise',
-        :password => 'webonise123#',
-        :headers => { :accept => :json, :content_type => :json }
-      ).execute
+  def get_api
+    client = Octokit::Client.new(:login => 'supriya.barkund@weboniselab.com', :password => 'webonise123#')
+    @repo_list = client.org_repos(client.user.company, {:type => "#{params[:type]}"})
+    @commit_list = client.commits("webonise/usa-basketball", :options => {:author => "#{params[:author]}"})
+    @pull_list = client.pulls('webonise/usa-basketball', :state=> "#{params[:state]}")
   end
 end
