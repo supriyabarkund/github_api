@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'list_of_commits', to: 'site#list_of_commits'
   get 'list_of_branches', to: 'site#list_of_branches'
   get 'list_of_pulls', to: 'site#list_of_pulls'
+  get 'filter_commits', to: 'site#filter_commits'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

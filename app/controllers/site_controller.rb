@@ -7,12 +7,12 @@ class SiteController < ApplicationController
 
   def list_of_repo
     @repo_list = @client.org_repos(@client.user.company.downcase,
-                                  {type: "#{params[:type]}"})
+                                  {type: "#{params[:type]}" })
   end
 
   def list_of_commits
-    @commit_list = @client.list_commits("#{@client.user.company.downcase}/#{params[:project]}",
-                    options: { author: "#{params[:author] }"})
+      @commit_list = @client.list_commits("#{@client.user.company.downcase}/#{params[:project]}",
+                      query: { author: "#{params[:author]}"})
   end
 
   def list_of_branches
@@ -24,9 +24,16 @@ class SiteController < ApplicationController
                                 state: "#{params[:state]}")
   end
 
+  def filter_commits
+    @filter_commits = @client.list_commits("#{@client.user.company.downcase}/#{params[:project]}",
+                    query: { author: "#{params[:author]}"})
+  end
+
+
   private
 
   def get_api
-    @client = Octokit::Client.new(login: 'barkundsupriya-webonise', password: 'webonise123#')
+    @client = Octokit::Client.new(login: 'barkundsupriya-webonise',
+                                  password: 'webonise123#', auto_paginate: true)
   end
 end
